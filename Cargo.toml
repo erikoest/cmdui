@@ -1,0 +1,9 @@
+[package]
+name = "cmdui"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+term_size = "*"
+rustyline = { version = "*", features = ["derive"] }
+console = "*"
