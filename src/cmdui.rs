@@ -643,6 +643,12 @@ impl<'a> CmdUI<'a> {
                     break;
                 }
 
+                // Skip empty args
+                if args[0].is_empty() {
+                    args.remove(0);
+                    continue;
+                }
+
                 let p = if cmd.len() == 0 {
                     args[0].clone()
                 }

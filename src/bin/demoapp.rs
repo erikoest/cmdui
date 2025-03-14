@@ -71,7 +71,7 @@ impl DemoApp {
     }
 
     fn store(&mut self, _: Option<&str>) {
-        println!("Storinging something");
+        println!("Storing something");
     }
 
     fn add_keyword(&mut self, _: &str, _: &str) {
