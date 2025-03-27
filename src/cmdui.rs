@@ -23,25 +23,27 @@ pub trait KeywordExpander {
                       -> Vec<String>;
 
     fn expand_filename(&self, path: &str) -> Vec<String> {
-        println!("Expanding filename {}", path);
         let mut ret = vec!();
-        let (dpart, fpart);
+        let (dir, dpart, fpart);
 
         if let Some(pos) = path.rfind('/') {
+            dir = &path[0..pos + 1];
             dpart = &path[0..pos + 1];
             fpart = &path[pos + 1..];
         }
         else if path == "." {
-            dpart = "./";
+            dir = "./";
+            dpart = ".";
             fpart = "";
         }
         else {
-            dpart = "./";
+            dir = "./";
+            dpart = "";
             fpart = path;
         }
 
-        if let Ok(dir) = fs::read_dir(dpart) {
-            for entry_result in dir {
+        if let Ok(d) = fs::read_dir(dir) {
+            for entry_result in d {
                 let entry = entry_result.unwrap();
                 if let Some(fstr) = entry.file_name().to_str() {
                     if fstr.starts_with(fpart) {
@@ -667,6 +669,13 @@ impl<'a> CmdUI<'a> {
                 else {
                     break;
                 }
+            }
+
+            if cmd == "" {
+                if args.len() > 0 {
+                    println!("Bad command.");
+                }
+                continue;
             }
 
             if let Err(e) = self.app.execute_line(&cmd, &args) {
